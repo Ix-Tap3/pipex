@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 10:03:31 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/20 13:04:38 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/20 17:24:36 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,26 @@
 # include "../libft/libft.h"
 # include <stdio.h>
 # include <fcntl.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
 typedef struct	s_pipex
 {
 	char	**ev;
 	t_list	*cmds;
+	int		cmd_count;
+	int		p_fd[2];
+	pid_t	pids[2];
+	int		prev_fd;
 	int		in_fd;
 	int		out_fd;
 }			t_pipex;
 
+int		pipex(t_pipex *data);
+
 /* PARSER */
 t_pipex	parse(int ac, char **av, char **ev);
+char	*parse_path(char **ev, char **cmd);
 
 /* UTILS functions */
 char	*str_catsep(char *s1, char *s2, char sep);

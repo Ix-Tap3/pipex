@@ -5,7 +5,7 @@ CC = cc
 CFLAGS = -Wall -Werror -Wextra -g
 LIB_DIR = libft
 LIB = $(LIB_DIR)/libft.a
-SRCS = main.c srcs/parser.c srcs/utils.c srcs/path.c
+SRCS = main.c srcs/parser.c srcs/utils.c srcs/path.c srcs/pipex.c
 OBJS_DIR = objs
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 

@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 10:37:17 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/20 12:57:35 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/20 16:39:09 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,21 @@ static t_list	*build_cmd_list(int ac, char **av)
 	return (cmd_list);
 }
 
+static int	count_cmd(t_list *cmds)
+{
+	t_list	*tmp;
+	int		count;
+
+	tmp = cmds;
+	count = 0;
+	while (tmp)
+	{
+		count++;
+		tmp = tmp->next;
+	}
+	return (count);
+}
+
 t_pipex	parse(int ac, char **av, char **ev)
 {
 	t_pipex	data;
@@ -78,5 +93,11 @@ t_pipex	parse(int ac, char **av, char **ev)
 	data.cmds = build_cmd_list(ac, av);
 	if (!data.cmds)
 		ft_puterror(NULL);
+	data.cmd_count = count_cmd(data.cmds);
+	if (data.cmd_count == 0)
+	{
+		free_lst(data.cmds);
+		ft_puterror("Error : Invalid number of commands\n");
+	}
 	return (data);
 }
