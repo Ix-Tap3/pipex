@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 10:37:17 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/20 16:39:09 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/20 18:41:39 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ static t_list	*build_cmd_list(int ac, char **av)
 	i = 2;
 	while (i < ac - 1)
 	{
+		if (ft_isempty(av[i]))
+		{
+			free_lst(cmd_list);
+			return (NULL);
+		}
 		cmd = ft_split(av[i], ' ');
 		if (!cmd || !*cmd)
 			return (NULL);
@@ -92,7 +97,11 @@ t_pipex	parse(int ac, char **av, char **ev)
 	open_files(&data, ac, av);
 	data.cmds = build_cmd_list(ac, av);
 	if (!data.cmds)
+	{
+		close(data.in_fd);
+		close(data.out_fd);
 		ft_puterror(NULL);
+	}
 	data.cmd_count = count_cmd(data.cmds);
 	if (data.cmd_count == 0)
 	{

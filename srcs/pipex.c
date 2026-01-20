@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 10:36:48 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/20 17:52:52 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/20 18:38:18 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 
 static void	close_fds(t_pipex *data, int i)
 {
-	if (i == 0 || i == -1)
-		close(data->in_fd);
+	i++;
+	close(data->in_fd);
 	close(data->p_fd[0]);
 	close(data->p_fd[1]);
-	if (i == data->cmd_count - 1 || i == -1)
-		close(data->out_fd);
+	close(data->out_fd);
 }
 
 static void	wait_all(t_pipex *data, int *status)
