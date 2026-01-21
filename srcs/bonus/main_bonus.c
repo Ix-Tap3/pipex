@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:10:14 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/21 21:03:46 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/21 21:50:40 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/pipex.h"
+#include "../../includes/pipex_bonus.h"
 
 int	main(int ac, char **av, char **ev)
 {
@@ -25,10 +25,11 @@ int	main(int ac, char **av, char **ev)
 	if (pipex(&data) == -1)
 	{
 		free_lst(data.cmds);
+		free(data.pids);
 		ft_puterror(NULL);
 		return (1);
 	}
-	log_lst(data.cmds);
 	free_lst(data.cmds);
+	free(data.pids);
 	return (0);
 }
