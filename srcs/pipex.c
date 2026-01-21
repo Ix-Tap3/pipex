@@ -6,15 +6,14 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 10:36:48 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/20 18:38:18 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/21 17:48:36 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-static void	close_fds(t_pipex *data, int i)
+static void	close_fds(t_pipex *data)
 {
-	i++;
 	close(data->in_fd);
 	close(data->p_fd[0]);
 	close(data->p_fd[1]);
@@ -23,7 +22,7 @@ static void	close_fds(t_pipex *data, int i)
 
 static void	wait_all(t_pipex *data, int *status)
 {
-	close_fds(data, -1);
+	close_fds(data);
 	waitpid(data->pids[0], status, 0);
 	waitpid(data->pids[1], status, 0);
 }
@@ -40,7 +39,7 @@ static int	child_process(t_pipex *data, t_list *cmds, int i)
 		dup2(data->out_fd, STDOUT_FILENO);
 	else
 		dup2(data->p_fd[1], STDOUT_FILENO);
-	close_fds(data, i);
+	close_fds(data);
 	path = parse_path(data->ev, ((char **)cmds->content));
 	if (!path)
 		return (-1);

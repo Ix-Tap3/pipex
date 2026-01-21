@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 10:37:17 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/20 18:41:39 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/21 17:57:44 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ static void	open_files(t_pipex *data, int ac, char **av)
 {
 	data->in_fd = open(av[1], O_RDONLY);
 	if (data->in_fd == -1)
+	{
+		free_lst(data->cmds);
 		ft_puterror(NULL);
+	}
 	data->out_fd = open(av[ac - 1], O_TRUNC | O_CREAT | O_WRONLY, 0644);
 	if (data->out_fd == -1)
 	{
@@ -58,7 +61,7 @@ static t_list	*build_cmd_list(int ac, char **av)
 		if (ft_isempty(av[i]))
 		{
 			free_lst(cmd_list);
-			return (NULL);
+			ft_puterror("Error : invalid empty cmd\n");
 		}
 		cmd = ft_split(av[i], ' ');
 		if (!cmd || !*cmd)
@@ -94,19 +97,15 @@ t_pipex	parse(int ac, char **av, char **ev)
 	t_pipex	data;
 
 	data.ev = ev;
-	open_files(&data, ac, av);
 	data.cmds = build_cmd_list(ac, av);
 	if (!data.cmds)
-	{
-		close(data.in_fd);
-		close(data.out_fd);
 		ft_puterror(NULL);
-	}
 	data.cmd_count = count_cmd(data.cmds);
 	if (data.cmd_count == 0)
 	{
 		free_lst(data.cmds);
 		ft_puterror("Error : Invalid number of commands\n");
 	}
+	open_files(&data, ac, av);
 	return (data);
 }
