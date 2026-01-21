@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 10:03:31 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/20 17:24:36 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/21 19:24:35 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-typedef struct	s_pipex
+typedef struct s_pipex
 {
 	char	**ev;
 	t_list	*cmds;

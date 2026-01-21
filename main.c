@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:10:14 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/21 13:04:43 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/21 19:22:18 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	main(int ac, char **av, char **ev)
 {
 	t_pipex	data;
-	
+
 	if (ac < 5)
 	{
 		ft_puterror("Error : Invalid number of arguments.\n");

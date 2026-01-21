@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 08:21:54 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/20 11:12:26 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/21 19:25:02 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static char	**set_path_ar(char **ev)
 	{
 		path_line = ft_strnstr(ev[i], "PATH=", 5);
 		if (path_line)
-			break;
+			break ;
 		i++;
 	}
 	if (!path_line)

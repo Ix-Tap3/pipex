@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 10:36:48 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/21 17:48:36 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/21 19:25:20 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,6 @@ int	pipex(t_pipex *data)
 		cmds = cmds->next;
 		i++;
 	}
-		wait_all(data, &status);
-		return (1);
+	wait_all(data, &status);
+	return (1);
 }
