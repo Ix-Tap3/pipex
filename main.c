@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:10:14 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/22 12:45:04 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/22 12:48:10 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	main(int ac, char **av, char **ev)
 		ft_puterror(NULL);
 		return (1);
 	}
-	log_lst(data.cmds);
 	free_lst(data.cmds);
 	return (0);
 }
