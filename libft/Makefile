@@ -56,7 +56,15 @@ $(OBJS_DIR)/%.o: %.c | $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@printf "$(YELLOW)$(CLEAN) Cleanning %s...$(RESET)\n" "$(OBJS)"
+	@printf "$(YELLOW)$(CLEAN) Cleaning $(NAME) objects...$(RESET)\n"
+	@if [ -n "$(OBJS)" ]; then \
+		for file in $(OBJS); do \
+			printf "\r$(YELLOW)$(CLEAN) Cleaning $$file$(RESET)\033[K"; \
+			rm -f $$file 2>/dev/null; \
+			sleep 0.05; \
+		done; \
+	fi
+	@printf "\r$(GREEN)$(OK) Objects cleaned!$(RESET)\033[K\n"
 	@rm -rf $(OBJS_DIR)
 
 fclean: clean
