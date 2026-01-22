@@ -5,9 +5,14 @@ CC = cc
 CFLAGS = -Wall -Werror -Wextra -g
 LIB_DIR = libft
 LIB = $(LIB_DIR)/libft.a
-SRCS = main.c srcs/parser.c srcs/utils.c srcs/path.c srcs/pipex.c
+SRCS_DIR = srcs
+BONUS_DIR = $(SRCS_DIR)/bonus
+SRCS = main.c $(SRCS_DIR)/parser.c $(SRCS_DIR)/utils.c $(SRCS_DIR)/path.c $(SRCS_DIR)/pipex.c
+SRCS_BONUS = $(BONUS_DIR)/main_bonus.c $(BONUS_DIR)/parser_bonus.c $(BONUS_DIR)/utils_bonus.c \
+			 $(BONUS_DIR)/path_bonus.c $(BONUS_DIR)/pipex_bonus.c
 OBJS_DIR = objs
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
+OBJS_BONUS = $(SRCS_BONUS:%.c=$(OBJS_DIR)/%.o)
 
 #==================================== COLORS ====================================#
 
@@ -50,6 +55,12 @@ $(NAME): $(OBJS) $(LIB)
 	@printf "\n"
 	@printf "$(YELLOW)$(BUILD) Linking %s...$(RESET)\n" "$(NAME)"
 	@$(CC) $(OBJS) -L$(LIB_DIR) -lft -o $(NAME)
+	@printf "$(GREEN)$(OK) %s Ready !$(RESET)\n" "$(NAME)"
+
+bonus: $(OBJS_BONUS) $(LIB)
+	@printf "\n"
+	@printf "$(YELLOW)$(BUILD) Linking %s with bonuses...$(RESET)\n" "$(NAME)"
+	@$(CC) $(OBJS_BONUS) -L$(LIB_DIR) -lft -o $(NAME)
 	@printf "$(GREEN)$(OK) %s Ready !$(RESET)\n" "$(NAME)"
 
 $(OBJS_DIR)/%.o: %.c
