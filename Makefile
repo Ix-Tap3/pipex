@@ -57,7 +57,7 @@ $(NAME): $(OBJS) $(LIB)
 	@$(CC) $(OBJS) -L$(LIB_DIR) -lft -o $(NAME)
 	@printf "$(GREEN)$(OK) %s Ready !$(RESET)\n" "$(NAME)"
 
-bonus: $(OBJS_BONUS) $(LIB)
+bonus: header $(OBJS_BONUS) $(LIB)
 	@printf "\n"
 	@printf "$(YELLOW)$(BUILD) Linking %s with bonuses...$(RESET)\n" "$(NAME)"
 	@$(CC) $(OBJS_BONUS) -L$(LIB_DIR) -lft -o $(NAME)
@@ -74,7 +74,7 @@ clean:
 		for file in $(OBJS); do \
 			printf "\r$(YELLOW)$(CLEAN) Cleaning $$file$(RESET)\033[K"; \
 			rm -f $$file 2>/dev/null; \
-			sleep 0.05; \
+			sleep 0.03; \
 		done; \
 	fi
 	@printf "\r$(GREEN)$(OK) Objects cleaned!$(RESET)\033[K\n"
