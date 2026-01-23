@@ -6,12 +6,11 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 20:18:27 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/23 13:27:13 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/23 14:23:43 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex_bonus.h"
-#include <stdio.h>
 
 static void	wait_all(t_pipex *data)
 {
@@ -25,16 +24,14 @@ static void	wait_all(t_pipex *data)
 	while (i < data->cmd_count)
 	{
 		waitpid(data->pids[i], &status, 0);
-		if (i == data->cmd_count-1)
+		if (i == data->cmd_count - 1)
 			final_status = (status >> 8) & 0xFF;
 		i++;
 	}
 }
 
-static int	child_process(t_pipex *data, t_list *cmds, int i)
+static void	redir_fds(t_pipex *data, int i)
 {
-	char	*path;
-
 	if (i == 0)
 		dup2(data->in_fd, STDIN_FILENO);
 	else
@@ -50,6 +47,13 @@ static int	child_process(t_pipex *data, t_list *cmds, int i)
 		close(data->p_fd[1]);
 		close(data->p_fd[0]);
 	}
+}
+
+static int	child_process(t_pipex *data, t_list *cmds, int i)
+{
+	char	*path;
+
+	redir_fds(data, i);
 	close(data->in_fd);
 	close(data->out_fd);
 	path = parse_path(data->ev, ((char **)cmds->content));
@@ -100,8 +104,8 @@ int	pipex(t_pipex *data)
 	i = 0;
 	while (i < data->cmd_count)
 	{
-		if(pipeline(data, cmds, i) == -1)
-			break;
+		if (pipeline(data, cmds, i) == -1)
+			break ;
 		cmds = cmds->next;
 		i++;
 	}
