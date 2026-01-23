@@ -6,13 +6,13 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 20:18:27 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/23 14:23:43 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/23 15:30:44 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex_bonus.h"
 
-static void	wait_all(t_pipex *data)
+static int	wait_all(t_pipex *data)
 {
 	int	i;
 	int	status;
@@ -28,6 +28,7 @@ static void	wait_all(t_pipex *data)
 			final_status = (status >> 8) & 0xFF;
 		i++;
 	}
+	return (final_status);
 }
 
 static void	redir_fds(t_pipex *data, int i)
@@ -49,7 +50,7 @@ static void	redir_fds(t_pipex *data, int i)
 	}
 }
 
-static int	child_process(t_pipex *data, t_list *cmds, int i)
+static void	child_process(t_pipex *data, t_list *cmds, int i)
 {
 	char	*path;
 
@@ -60,10 +61,14 @@ static int	child_process(t_pipex *data, t_list *cmds, int i)
 	if (!path)
 	{
 		ft_putstr_fd("Error: command not found\n", 2);
+		free_lst(data->cmds);
+		free(data->pids);
 		exit(127);
 	}
 	execve(path, ((char **)cmds->content), data->ev);
 	perror("execve");
+	free_lst(data->cmds);
+	free(data->pids);
 	exit(126);
 }
 
@@ -99,9 +104,11 @@ int	pipex(t_pipex *data)
 {
 	t_list	*cmds;
 	int		i;
+	int		status;
 
 	cmds = data->cmds;
 	i = 0;
+	status = 0;
 	while (i < data->cmd_count)
 	{
 		if (pipeline(data, cmds, i) == -1)
@@ -113,6 +120,6 @@ int	pipex(t_pipex *data)
 	close(data->out_fd);
 	if (data->prev_fd > 0)
 		close(data->prev_fd);
-	wait_all(data);
-	return (1);
+	status = wait_all(data);
+	return (status);
 }

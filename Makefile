@@ -74,7 +74,7 @@ clean:
 		for file in $(OBJS); do \
 			printf "\r$(YELLOW)$(CLEAN) Cleaning $$file$(RESET)\033[K"; \
 			rm -f $$file 2>/dev/null; \
-			sleep 0.03; \
+			sleep 0.01; \
 		done; \
 	fi
 	@printf "\r$(GREEN)$(OK) Objects cleaned!$(RESET)\033[K\n"
