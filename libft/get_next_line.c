@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 11:39:50 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/08 11:13:31 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/24 11:04:25 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,20 @@ static int	read_line(int fd, char **gnl_buffer)
 	return (rd_state);
 }
 
-char	*get_next_line(int fd)
+static void	delimiter_exit(char **buffer, char *line, char *limiter, int fd)
+{
+	int	d_len;
+
+	if (!line || !limiter)
+		return ;
+	d_len = ft_strlen(limiter);
+	if (ft_strncmp(line, limiter, d_len) != 0)
+		return ;
+	free(buffer[fd]);
+	buffer[fd] = NULL;
+}
+
+char	*get_next_line(int fd, char *delimiter)
 {
 	static char	*gnl_buffer[1024];
 	char		*line;
@@ -113,5 +126,6 @@ char	*get_next_line(int fd)
 		return (line);
 	}
 	line = ft_gnlsubstr(&gnl_buffer[fd]);
+	delimiter_exit(gnl_buffer, line, delimiter, fd);
 	return (line);
 }

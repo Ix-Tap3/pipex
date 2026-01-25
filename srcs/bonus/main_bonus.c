@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:10:14 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/23 13:27:32 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/24 12:09:17 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,7 @@ int	main(int ac, char **av, char **ev)
 		return (1);
 	}
 	data = parse(ac, av, ev);
-	if (pipex(&data) == -1)
-	{
-		free_lst(data.cmds);
-		free(data.pids);
-		ft_puterror(NULL);
-	}
+	pipex(&data);
 	free_lst(data.cmds);
 	free(data.pids);
 	return (0);

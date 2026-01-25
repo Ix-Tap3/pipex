@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 20:18:27 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/23 15:30:44 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/25 10:36:24 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ static void	child_process(t_pipex *data, t_list *cmds, int i)
 	if (!path)
 	{
 		ft_putstr_fd("Error: command not found\n", 2);
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
 		free_lst(data->cmds);
 		free(data->pids);
 		exit(127);
@@ -118,8 +120,6 @@ int	pipex(t_pipex *data)
 	}
 	close(data->in_fd);
 	close(data->out_fd);
-	if (data->prev_fd > 0)
-		close(data->prev_fd);
 	status = wait_all(data);
 	return (status);
 }

@@ -6,11 +6,12 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 10:36:48 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/23 15:32:13 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/25 10:36:29 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
+#include <unistd.h>
 
 static int	wait_all(t_pipex *data)
 {
@@ -21,7 +22,7 @@ static int	wait_all(t_pipex *data)
 	status = 0;
 	final_status = 0;
 	i = 0;
-	while (i < data->cmd_count - 1)
+	while (i < data->cmd_count)
 	{
 		waitpid(data->pids[i], &status, 0);
 		if (i == data->cmd_count - 1)
@@ -61,6 +62,8 @@ static void	child_process(t_pipex *data, t_list *cmds, int i)
 	if (!path)
 	{
 		ft_putstr_fd("Error: command not found\n", 2);
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
 		free_lst(data->cmds);
 		exit(127);
 	}

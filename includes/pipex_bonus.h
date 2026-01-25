@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 19:42:08 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/21 20:23:19 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/24 11:25:31 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 typedef struct s_pipex
 {
 	char	**ev;
+	char	*delimiter;
 	t_list	*cmds;
 	pid_t	*pids;
 	int		p_fd[2];
@@ -35,6 +36,7 @@ int		pipex(t_pipex *data);
 /* PARSER */
 t_pipex	parse(int ac, char **av, char **ev);
 char	*parse_path(char **ev, char **cmd);
+int		read_h_doc(t_pipex *data);
 
 /* UTILS functions */
 char	*str_catsep(char *s1, char *s2, char sep);

@@ -9,7 +9,7 @@ SRCS_DIR = srcs
 BONUS_DIR = $(SRCS_DIR)/bonus
 SRCS = main.c $(SRCS_DIR)/parser.c $(SRCS_DIR)/utils.c $(SRCS_DIR)/path.c $(SRCS_DIR)/pipex.c
 SRCS_BONUS = $(BONUS_DIR)/main_bonus.c $(BONUS_DIR)/parser_bonus.c $(BONUS_DIR)/utils_bonus.c \
-			 $(BONUS_DIR)/path_bonus.c $(BONUS_DIR)/pipex_bonus.c
+			 $(BONUS_DIR)/path_bonus.c $(BONUS_DIR)/pipex_bonus.c $(BONUS_DIR)/here_doc_bonus.c
 OBJS_DIR = objs
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 OBJS_BONUS = $(SRCS_BONUS:%.c=$(OBJS_DIR)/%.o)
@@ -35,7 +35,7 @@ ROCKET  = 🚀
 
 #==================================== PHONY ====================================#
 
-.PHONY: all clean fclean re
+.PHONY: all bonus clean fclean re re_bonus
 
 #==================================== RULES ====================================#  
 all: header $(NAME)
@@ -88,3 +88,5 @@ fclean: clean
 	@rm -rf $(NAME)
 
 re: fclean all
+
+re_bonus : fclean bonus

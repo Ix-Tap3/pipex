@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 10:48:47 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/20 18:23:43 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/24 11:00:57 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_itoa(int n);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-char	*get_next_line(int fd);
+char	*get_next_line(int fd, char *delimiter);
 char	*ft_gnlcalloc(size_t n, size_t size);
 char	*ft_gnlsubstr(char **s);
 char	*ft_strfdup(char *s, int index);
