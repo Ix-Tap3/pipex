@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 10:03:31 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/21 19:24:35 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/31 12:12:23 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,6 @@ char	*str_catsep(char *s1, char *s2, char sep);
 void	ft_puterror(char *error_msg);
 void	free_lst(t_list *lst);
 void	log_lst(t_list *lst);
+int		count_cmd(t_list *cmds);
 
 #endif

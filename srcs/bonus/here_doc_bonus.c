@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 10:06:07 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/24 12:06:10 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/31 12:17:43 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static int	write_h_doc(int fd, char *line)
 		perror("write");
 		close(fd);
 		unlink("/tmp/.here_doc_tmp");
-
 	}
 	return (status);
 }

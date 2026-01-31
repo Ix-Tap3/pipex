@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:26:34 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/31 11:24:20 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/31 12:11:40 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,19 @@ void	ft_puterror(char *error_msg)
 	}
 	ft_putstr_fd(error_msg, 2);
 	exit(1);
+}
+
+int	count_cmd(t_list *cmds)
+{
+	t_list	*tmp;
+	int		count;
+
+	tmp = cmds;
+	count = 0;
+	while (tmp)
+	{
+		count++;
+		tmp = tmp->next;
+	}
+	return (count);
 }

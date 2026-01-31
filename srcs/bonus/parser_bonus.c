@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 19:47:02 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/31 11:32:47 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/31 12:22:41 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,21 @@ static void	open_files(t_pipex *data, int ac, char **av, int here_doc)
 	}
 }
 
-static int	add_to_list(t_list **lst, char **content)
+static char	**set_cmd(char *str)
 {
-	t_list	*node;
+	char	**cmd;
 
-	if (!lst || !content || !*content)
-		return (-1);
-	if (!*lst)
+	if (ft_isempty(str))
 	{
-		*lst = ft_lstnew((void *)content);
-		if (!*lst)
-			return (-1);
-		return (0);
+		cmd = ft_calloc(2, sizeof(char *));
+		if (!cmd)
+			return (NULL);
+		cmd[0] = str;
+		cmd[1] = NULL;
 	}
-	node = ft_lstnew((void *)content);
-	if (!node)
-		return (-1);
-	ft_lstadd_back(lst, node);
-	return (0);
+	else
+		cmd = ft_split(str, ' ');
+	return (cmd);
 }
 
 static t_list	*build_cmd_list(int ac, char **av, int here_doc)
@@ -70,21 +67,12 @@ static t_list	*build_cmd_list(int ac, char **av, int here_doc)
 	i = 2 + here_doc;
 	while (i < ac - 1)
 	{
-		if (ft_isempty(av[i]))
-		{
-			cmd = ft_calloc(2, sizeof(char *));
-			if (!cmd)
-			{
-				free_lst(cmd_list);
-				return (NULL);
-			}
-			cmd[0] = av[i];
-			cmd[1] = NULL;
-		}
-		else
-			cmd = ft_split(av[i], ' ');
+		cmd = set_cmd(av[i]);
 		if (!cmd || !*cmd)
+		{
+			free_lst(cmd_list);
 			return (NULL);
+		}
 		if (add_to_list(&cmd_list, cmd) == -1)
 		{
 			ft_freestrar(cmd);
