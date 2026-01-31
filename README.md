@@ -77,11 +77,11 @@ These command will genereate an executable named pipex.
 The bonus part extends the mandatory program to behave even closer to a real shell.
 The bonus features include :
 
-. handling mutiple pipes
+- Handling mutiple pipes
 ```bash
 ./pipex infile cmd1 cmd2 ... cmdn outfile
 ```
-. Handling here_doc
+- Handling here_doc
 ```bash
 ./pipex here_doc LIMITER cmd1 cmd2 outfile
 ```
