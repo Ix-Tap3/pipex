@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 08:21:54 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/21 19:25:02 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/31 11:19:39 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ char	*parse_path(char **ev, char **cmd)
 	char	**path_ar;
 	char	*path;
 
+	if (ft_isempty(cmd[0]))
+		return (NULL);
 	path_ar = set_path_ar(ev);
 	if (!path_ar)
 		return (NULL);

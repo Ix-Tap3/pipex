@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:50:50 by pcaplat           #+#    #+#             */
-/*   Updated: 2025/10/18 10:52:47 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/31 11:23:43 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_freestrar(char **ar)
 	i = 0;
 	while (ar[i] != NULL)
 	{
-		if (ar[i])
+		if (ar[i] && !ft_isempty(ar[i]))
 			free(ar[i]);
 		i++;
 	}
