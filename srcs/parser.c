@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 10:37:17 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/31 12:17:07 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/01/31 19:12:57 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void	open_files(t_pipex *data, int ac, char **av)
 	data->out_fd = open(av[ac - 1], O_TRUNC | O_CREAT | O_WRONLY, 0644);
 	if (data->out_fd == -1)
 	{
+		free_lst(data->cmds);
 		close(data->in_fd);
 		ft_puterror(NULL);
 	}
