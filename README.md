@@ -10,26 +10,21 @@ The program mimics how a shell executes commands connected by the pipe (`|`) ope
 
 Through this project, several fundamental concepts of Unix system programming are explored:
 
-. Process creation using fork
+- Process creation using fork
 
-. Inter-process communication with pipe
+- Inter-process communication with pipe
 
-. File descriptor duplication with dup2
+- File descriptor duplication with dup2
 
-. Command execution using execve
+- Command execution using execve
 
-. Input and output redirections
+- Input and output redirections
 
-. Command path resolution using the PATH environment variable
+- Command path resolution using the PATH environment variable
 
-. Proper error handling and memory management
+- Proper error handling and memory management
 
 Pipex helps to better understand how a shell works internally and how Unix manages processes and file descriptors.
-
-Shell equivalent:
-```bash
-< infile cmd1 | cmd2 > outfile
-```
 
 ## Instructions
 
@@ -111,11 +106,11 @@ make fclean
 ## Resources
 
 Here are some useful resources used during the developpement of this project:
-. man **fork**
-. man **pipe**
-. man **dup2**
-. man **execve**
-. man **wait**
-[redirection documentation](https://www.pierre-giraud.com/shell-bash/redirection-gestion-flux/)
-[GNU redirection documentation](https://www.gnu.org/software/bash/manual/html_node/Redirections.html)
+- man **fork**
+- man **pipe**
+- man **dup2**
+- man **execve**
+- man **wait**
+- [redirection documentation](https://www.pierre-giraud.com/shell-bash/redirection-gestion-flux/)
+- [GNU redirection documentation](https://www.gnu.org/software/bash/manual/html_node/Redirections.html)
 
