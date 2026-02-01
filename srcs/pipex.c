@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 10:36:48 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/25 10:36:29 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/02/01 10:24:13 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static int	wait_all(t_pipex *data)
 	i = 0;
 	while (i < data->cmd_count)
 	{
-		waitpid(data->pids[i], &status, 0);
+		if (data->pids[i] != -1)
+			waitpid(data->pids[i], &status, 0);
 		if (i == data->cmd_count - 1)
 			final_status = (status >> 8) & 0xFF;
 		i++;
@@ -56,12 +57,14 @@ static void	child_process(t_pipex *data, t_list *cmds, int i)
 	char	*path;
 
 	redir_fds(data, i);
-	close(data->in_fd);
-	close(data->out_fd);
+	if (data->in_fd != -1)
+		close(data->in_fd);
+	if (data->out_fd != -1)
+		close(data->out_fd);
 	path = parse_path(data->ev, ((char **)cmds->content));
 	if (!path)
 	{
-		ft_putstr_fd("Error: command not found\n", 2);
+		write(2, "Error: command not found\n", 25);
 		close(STDIN_FILENO);
 		close(STDOUT_FILENO);
 		free_lst(data->cmds);
@@ -75,10 +78,22 @@ static void	child_process(t_pipex *data, t_list *cmds, int i)
 
 static int	pipeline(t_pipex *data, t_list *cmds, int i)
 {
+	if (data->in_fd == -1 && i == 0)
+	{
+		close(data->p_fd[1]);
+		data->pids[i] = -1;
+		return (0);
+	}
+	else if (data->out_fd == -1 && i > 0)
+	{
+		close(data->p_fd[0]);
+		data->pids[i] = -1;
+		return (0);
+	}
 	data->pids[i] = fork();
 	if (data->pids[i] == -1)
 	{
-		perror("fork");
+		perror("Error");
 		return (-1);
 	}
 	if (data->pids[i] == 0)
@@ -101,7 +116,7 @@ int	pipex(t_pipex *data)
 	i = 0;
 	if (pipe(data->p_fd) == -1)
 	{
-		perror("pipe");
+		perror("Error");
 		return (-1);
 	}
 	while (i < data->cmd_count)
@@ -111,8 +126,10 @@ int	pipex(t_pipex *data)
 		cmds = cmds->next;
 		i++;
 	}
-	close(data->in_fd);
-	close(data->out_fd);
+	if (data->in_fd != -1)
+		close(data->in_fd);
+	if (data->out_fd != -1)
+		close(data->out_fd);
 	status = wait_all(data);
 	return (status);
 }

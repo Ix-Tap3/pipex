@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 19:47:02 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/31 12:22:41 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/02/01 10:18:38 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,13 @@ static void	open_files(t_pipex *data, int ac, char **av, int here_doc)
 	else
 		data->in_fd = open(av[1], O_RDONLY);
 	if (data->in_fd == -1)
-	{
-		free_lst(data->cmds);
-		free(data->pids);
-		ft_puterror(NULL);
-	}
+		perror("Error");
 	if (here_doc)
 		data->out_fd = open(av[ac - 1], O_APPEND | O_CREAT | O_WRONLY, 0644);
 	else
 		data->out_fd = open(av[ac - 1], O_TRUNC | O_CREAT | O_WRONLY, 0644);
 	if (data->out_fd == -1)
-	{
-		free_lst(data->cmds);
-		free(data->pids);
-		close(data->in_fd);
-		ft_puterror(NULL);
-	}
+		perror("Error"); 
 }
 
 static char	**set_cmd(char *str)
@@ -95,7 +86,10 @@ static int	parse_heredoc(t_pipex *data, char **av)
 	}
 	data->delimiter = ft_strdup(av[2]);
 	if (!data->delimiter)
-		ft_puterror(NULL);
+	{
+		perror("Error");
+		return (-1);
+	}
 	status = read_h_doc(data);
 	if (status == -1)
 	{
@@ -118,16 +112,17 @@ t_pipex	parse(int ac, char **av, char **ev)
 		exit(EXIT_FAILURE);
 	data.cmds = build_cmd_list(ac, av, here_doc);
 	if (!data.cmds)
-		ft_puterror(NULL);
-	data.cmd_count = count_cmd(data.cmds);
-	if (data.cmd_count == 0)
 	{
-		free_lst(data.cmds);
-		ft_puterror("Error : Invalid number of commands\n");
+		if (data.delimiter)
+			free(data.delimiter);
+		ft_puterror(NULL);
 	}
+	data.cmd_count = count_cmd(data.cmds);
 	data.pids = ft_calloc(data.cmd_count, sizeof(pid_t));
 	if (!data.pids)
 	{
+		if (data.delimiter)
+			free(data.delimiter);
 		free_lst(data.cmds);
 		ft_puterror(NULL);
 	}
