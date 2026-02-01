@@ -6,12 +6,11 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 20:18:27 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/02/01 11:52:27 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/02/01 18:16:51 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex_bonus.h"
-#include <unistd.h>
 
 static int	wait_all(t_pipex *data)
 {
@@ -51,6 +50,10 @@ static void	redir_fds(t_pipex *data, int i)
 		close(data->p_fd[1]);
 		close(data->p_fd[0]);
 	}
+	if (data->in_fd != -1)
+		close(data->in_fd);
+	if (data->out_fd != -1)
+		close(data->out_fd);
 }
 
 static void	child_process(t_pipex *data, t_list *cmds, int i)
@@ -58,72 +61,42 @@ static void	child_process(t_pipex *data, t_list *cmds, int i)
 	char	*path;
 
 	redir_fds(data, i);
-	if (data->in_fd != -1)
-		close(data->in_fd);
-	if (data->out_fd != -1)
-		close(data->out_fd);
 	path = parse_path(data->ev, ((char **)cmds->content));
 	if (!path)
 	{
 		if (i != data->cmd_count - 1 || data->out_fd != -1)
 			write(2, "Error: command not found\n", 25);
-		close(STDIN_FILENO);
-		close(STDOUT_FILENO);
-		free_lst(data->cmds);
-		free(data->pids);
+		free_childs(data);
 		exit(127);
 	}
 	if (i == data->cmd_count - 1 && data->out_fd == -1)
 	{
-		close(STDIN_FILENO);
-		close(STDOUT_FILENO);
-		free_lst(data->cmds);
-		free(data->pids);
+		free_childs(data);
 		free(path);
 		exit(126);
 	}
 	execve(path, ((char **)cmds->content), data->ev);
-	perror("execve");
-	free_lst(data->cmds);
+	perror("Error");
 	free(path);
-	free(data->pids);
+	free_childs(data);
 	exit(126);
 }
 
 static int	pipeline(t_pipex *data, t_list *cmds, int i)
 {
-	if (data->in_fd == -1 && i == 0)
-	{
-		if (i < data->cmd_count - 1)
-		{
-			if (pipe(data->p_fd) == -1)
-			{
-				perror("Error");
-				return (-1);
-			}
-			close(data->p_fd[1]);
-			data->prev_fd = data->p_fd[0];
-		}
-		data->pids[i] = -1;
-		return (0);
-	}
 	if (i < data->cmd_count - 1)
 	{
 		if (pipe(data->p_fd) == -1)
-		{
-			perror("Error");
 			return (-1);
-		}
 	}
+	if (check_in_fd(data, i) == -1)
+		return (-2);
 	data->pids[i] = fork();
 	if (data->pids[i] == -1)
 	{
 		if (i < data->cmd_count - 1)
-		{
-			close(data->p_fd[0]);
-			close(data->p_fd[1]);
-		}
-		return (-2);
+			close_pfd(data);
+		return (-1);
 	}
 	if (data->pids[i] == 0)
 		child_process(data, cmds, i);
@@ -150,13 +123,10 @@ int	pipex(t_pipex *data)
 	ret = 0;
 	while (i < data->cmd_count)
 	{
-		ret = pipeline(data, cmds, i);
-		if (ret == -2)
+		ret = pipeline(data, cmds, i++);
+		if (ret == -1)
 			perror("Error");
-		if (ret < 0)
-			break ;
 		cmds = cmds->next;
-		i++;
 	}
 	if (data->in_fd != -1)
 		close(data->in_fd);

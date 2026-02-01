@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 19:42:08 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/01/31 12:23:38 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/02/01 17:35:37 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,8 @@ void	free_lst(t_list *lst);
 void	log_lst(t_list *lst);
 int		count_cmd(t_list *lst);
 int		add_to_list(t_list **lst, char **content);
+int		check_in_fd(t_pipex *data, int i);
+void	free_childs(t_pipex *data);
+void	close_pfd(t_pipex *data);
 
 #endif

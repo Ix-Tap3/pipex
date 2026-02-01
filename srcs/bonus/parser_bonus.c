@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 19:47:02 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/02/01 10:18:38 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/02/01 16:51:53 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	open_files(t_pipex *data, int ac, char **av, int here_doc)
 	else
 		data->out_fd = open(av[ac - 1], O_TRUNC | O_CREAT | O_WRONLY, 0644);
 	if (data->out_fd == -1)
-		perror("Error"); 
+		perror("Error");
 }
 
 static char	**set_cmd(char *str)
@@ -113,16 +113,12 @@ t_pipex	parse(int ac, char **av, char **ev)
 	data.cmds = build_cmd_list(ac, av, here_doc);
 	if (!data.cmds)
 	{
-		if (data.delimiter)
-			free(data.delimiter);
 		ft_puterror(NULL);
 	}
 	data.cmd_count = count_cmd(data.cmds);
 	data.pids = ft_calloc(data.cmd_count, sizeof(pid_t));
 	if (!data.pids)
 	{
-		if (data.delimiter)
-			free(data.delimiter);
 		free_lst(data.cmds);
 		ft_puterror(NULL);
 	}
