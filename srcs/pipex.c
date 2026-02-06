@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 10:36:48 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/02/01 10:24:13 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/02/05 13:00:21 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,24 +55,27 @@ static void	redir_fds(t_pipex *data, int i)
 static void	child_process(t_pipex *data, t_list *cmds, int i)
 {
 	char	*path;
+	int		perm_error;
 
 	redir_fds(data, i);
 	if (data->in_fd != -1)
 		close(data->in_fd);
 	if (data->out_fd != -1)
 		close(data->out_fd);
-	path = parse_path(data->ev, ((char **)cmds->content));
+	perm_error = 0;
+	path = parse_path(data->ev, ((char **)cmds->content), &perm_error);
 	if (!path)
 	{
-		write(2, "Error: command not found\n", 25);
-		close(STDIN_FILENO);
-		close(STDOUT_FILENO);
-		free_lst(data->cmds);
+		if (perm_error == 1)
+			perror("Error");
+		else
+			write(2, "Error: command not found\n", 25);
+		free_childs(data);
 		exit(127);
 	}
 	execve(path, ((char **)cmds->content), data->ev);
 	perror("execve");
-	free_lst(data->cmds);
+	free_childs(data);
 	exit(126);
 }
 

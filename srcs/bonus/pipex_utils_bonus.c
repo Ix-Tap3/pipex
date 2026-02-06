@@ -6,14 +6,16 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/01 17:24:59 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/02/01 18:36:07 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/02/05 12:44:31 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex_bonus.h"
 
-void	free_childs(t_pipex *data)
+void	free_childs(t_pipex *data, char *path)
 {
+	if (path)
+		free(path);
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
 	free_lst(data->cmds);

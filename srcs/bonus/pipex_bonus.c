@@ -6,11 +6,12 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 20:18:27 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/02/01 18:16:51 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/02/05 12:42:08 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex_bonus.h"
+#include <stdio.h>
 
 static int	wait_all(t_pipex *data)
 {
@@ -59,26 +60,28 @@ static void	redir_fds(t_pipex *data, int i)
 static void	child_process(t_pipex *data, t_list *cmds, int i)
 {
 	char	*path;
+	int		perm_error;
 
 	redir_fds(data, i);
-	path = parse_path(data->ev, ((char **)cmds->content));
+	perm_error = 0;
+	path = parse_path(data->ev, ((char **)cmds->content), &perm_error);
 	if (!path)
 	{
-		if (i != data->cmd_count - 1 || data->out_fd != -1)
+		if ((i != data->cmd_count - 1 || data->out_fd != -1) && perm_error == 0)
 			write(2, "Error: command not found\n", 25);
-		free_childs(data);
+		else 
+			perror("Error");
+		free_childs(data, NULL);
 		exit(127);
 	}
 	if (i == data->cmd_count - 1 && data->out_fd == -1)
 	{
-		free_childs(data);
-		free(path);
+		free_childs(data, path);
 		exit(126);
 	}
 	execve(path, ((char **)cmds->content), data->ev);
 	perror("Error");
-	free(path);
-	free_childs(data);
+	free_childs(data, path);
 	exit(126);
 }
 

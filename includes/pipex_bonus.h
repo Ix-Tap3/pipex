@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 19:42:08 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/02/01 17:35:37 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/02/05 12:49:24 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		pipex(t_pipex *data);
 
 /* PARSER */
 t_pipex	parse(int ac, char **av, char **ev);
-char	*parse_path(char **ev, char **cmd);
+char	*parse_path(char **ev, char **cmd, int *perm_error);
 int		read_h_doc(t_pipex *data);
 
 /* UTILS functions */
@@ -46,7 +46,7 @@ void	log_lst(t_list *lst);
 int		count_cmd(t_list *lst);
 int		add_to_list(t_list **lst, char **content);
 int		check_in_fd(t_pipex *data, int i);
-void	free_childs(t_pipex *data);
+void	free_childs(t_pipex *data, char *path);
 void	close_pfd(t_pipex *data);
 
 #endif
