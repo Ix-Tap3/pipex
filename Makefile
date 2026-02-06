@@ -19,75 +19,76 @@ OBJS_BONUS = $(SRCS_BONUS:%.c=$(OBJS_DIR)/%.o)
 
 RESET   = \033[0m
 BOLD    = \033[1m
-RED     = \033[31m
-GREEN   = \033[32m
-YELLOW  = \033[33m
-BLUE    = \033[34m
-MAGENTA = \033[35m
-CYAN    = \033[36m
 
-#==================================== EMOJIS ====================================#
+PRIMARY = \033[38;2;10;189;198m
+INFO    = \033[38;2;12;145;176m
+ACCENT  = \033[38;2;14;123;165m
+WARN    = \033[38;2;17;81;134m
+ERROR   = \033[38;2;19;62;124m
 
-OK      = ✅
-WARN    = ⚠️
-CLEAN   = 🧹
-BUILD   = 🔨
-ROCKET  = 🚀
+#==================================== HEADER ====================================#
+
+define HEADER
+@printf "\033[38;2;10;189;198m ||'''|,                             \033[0m\n"
+@printf "\033[38;2;11;167;187m ||   ||  ''                         \033[0m\n"
+@printf "\033[38;2;12;145;176m ||...|'  ||  '||''|, .|''|, \\\\\\\\  // \033[0m\n"
+@printf "\033[38;2;14;123;165m ||       ||   ||  || ||..||   ><   \033[0m\n"
+@printf "\033[38;2;16;101;144m.||      .||.  ||..|' \`|...  //  \\\\\\\\ \033[0m\n"
+@printf "\033[38;2;17;81;134m               ||                   \033[0m\n"
+@printf "\033[38;2;19;62;124m              .||                   \033[0m\n"
+@printf "\n"
+endef
 
 #==================================== PHONY ====================================#
 
-.PHONY: all bonus clean fclean re re_bonus
+.PHONY: all bonus clean fclean re re_bonus header
 
-#==================================== RULES ====================================#  
+#==================================== RULES ====================================#
+
 all: header $(NAME)
-	@printf "$(GREEN)$(ROCKET)Build Finished !$(RESET)\n"
+	@printf "$(PRIMARY)Build Finished !$(RESET)\n"
 
 header:
-	@printf "$(BLUE)$(BOLD)\n"
-	@printf "==================================\n"
-	@printf "       Building $(NAME)\n"
-	@printf "==================================\n"
-	@printf "$(RESET)\n"
+	$(HEADER)
 
 $(LIB):
 	@make --no-print-directory -C $(LIB_DIR)
 
 $(NAME): $(OBJS) $(LIB)
 	@printf "\n"
-	@printf "$(YELLOW)$(BUILD) Linking %s...$(RESET)\n" "$(NAME)"
+	@printf "$(INFO)Linking %s...$(RESET)\n" "$(NAME)"
 	@$(CC) $(OBJS) -L$(LIB_DIR) -lft -o $(NAME)
-	@printf "$(GREEN)$(OK) %s Ready !$(RESET)\n" "$(NAME)"
+	@printf "$(PRIMARY)%s Ready !$(RESET)\n" "$(NAME)"
 
 bonus: header $(OBJS_BONUS) $(LIB)
-	@printf "\n"
-	@printf "$(YELLOW)$(BUILD) Linking %s with bonuses...$(RESET)\n" "$(NAME)"
+	@printf "$(INFO)Linking %s with bonuses...$(RESET)\n" "$(NAME)"
 	@$(CC) $(OBJS_BONUS) -L$(LIB_DIR) -lft -o $(NAME)
-	@printf "$(GREEN)$(OK) %s Ready !$(RESET)\n" "$(NAME)"
+	@printf "$(PRIMARY)%s Ready !$(RESET)\n" "$(NAME)"
 
 $(OBJS_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
-	@printf "\r$(BLUE)$(BUILD) Compiling object: %s$(RESET)\033[K" "$<"
+	@printf "\r$(ACCENT)Compiling object: %s$(RESET)\033[K" "$<"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-clean:
-	@printf "$(YELLOW)$(CLEAN) Cleaning $(NAME) objects...$(RESET)\n"
-	@if [ -n "$OBJS" ]; then \
+clean: header
+	@printf "$(INFO)Cleaning $(NAME) objects...$(RESET)\n"
+	@if [ -d "$(OBJS_DIR)" ]; then \
 		for file in $(OBJS); do \
-			printf "\r$(YELLOW)$(CLEAN) Cleaning $$file$(RESET)\033[K"; \
+			printf "\r$(ACCENT)Cleaning $$file$(RESET)\033[K"; \
 			rm -f $$file 2>/dev/null; \
-			sleep 0.01; \
 		done; \
+		printf "\n"; \
+		rm -rf $(OBJS_DIR); \
 	fi
-	@printf "\r$(GREEN)$(OK) Objects cleaned!$(RESET)\033[K\n"
 	@make --no-print-directory -C $(LIB_DIR) clean
-	@rm -rf $(OBJS_DIR)
+	@printf "\r$(PRIMARY)$(NAME) objects cleaned!$(RESET)\033[K\n"
 
-fclean: clean
-	@printf "$(RED)$(CLEAN) Cleanning %s...$(RESET)\n" "$(NAME)"
-	@printf "$(RED)$(CLEAN) Cleanning %s...$(RESET)\n" "$(LIB)"
-	@rm -rf $(LIB)
+fclean: header clean
+	@printf "$(ERROR)Cleanning %s...$(RESET)\n" "$(NAME)"
+	@printf "$(ERROR)Cleanning %s...$(RESET)\n" "$(LIB)"
 	@rm -rf $(NAME)
+	@rm -rf $(LIB)
 
-re: fclean all
+re: header fclean all
 
-re_bonus : fclean bonus
+re_bonus : header fclean bonus

@@ -19,20 +19,12 @@ OBJS = ${SRCS:%.c=$(OBJS_DIR)/%.o}
 
 RESET   = \033[0m
 BOLD    = \033[1m
-RED     = \033[31m
-GREEN   = \033[32m
-YELLOW  = \033[33m
-BLUE    = \033[34m
-MAGENTA = \033[35m
-CYAN    = \033[36m
 
-#==================================== EMOJIS ====================================#
-
-OK      = ✅
-WARN    = ⚠️
-CLEAN   = 🧹
-BUILD   = 🔨
-ROCKET  = 🚀
+PRIMARY = \033[38;2;10;189;198m
+INFO    = \033[38;2;12;145;176m
+ACCENT  = \033[38;2;14;123;165m
+WARN    = \033[38;2;17;81;134m
+ERROR   = \033[38;2;19;62;124m
 
 #==================================== PHONY ====================================#
 
@@ -40,36 +32,35 @@ ROCKET  = 🚀
 
 #==================================== RULES ====================================#  
 all: $(NAME)
-	@printf "$(GREEN)$(ROCKET)Build Finished !$(RESET)\n"
 
 $(NAME): $(OBJS)
 	@printf "\n"
-	@printf "$(YELLOW)$(BUILD) Archiving %s...$(RESET)\n" "$(NAME)"
+	@printf "$(INFO)Archiving %s...$(RESET)\n" "$(NAME)"
 	@ar rcs $(NAME) $(OBJS)
-	@printf "$(GREEN)$(OK) %s Ready !$(RESET)\n" "$(NAME)"
+	@printf "$(PRIMARY)%s Ready !$(RESET)\n" "$(NAME)"
 
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
 
 $(OBJS_DIR)/%.o: %.c | $(OBJS_DIR)
-	@printf "\r$(BLUE)$(BUILD) Compiling object: %s$(RESET)\033[K" "$<"
+	@printf "\r$(ACCENT)Compiling object: %s$(RESET)\033[K" "$<"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@printf "$(YELLOW)$(CLEAN) Cleaning $(NAME) objects...$(RESET)\n"
+	@printf "$(INFO)Cleaning $(NAME) objects...$(RESET)\n"
 	@if [ -n "$(OBJS)" ]; then \
 		for file in $(OBJS); do \
-			printf "\r$(YELLOW)$(CLEAN) Cleaning $$file$(RESET)\033[K"; \
+			printf "\r$(ACCENT)Cleaning $$file$(RESET)\033[K"; \
 			rm -f $$file 2>/dev/null; \
-			sleep 0.05; \
+			sleep 0.01; \
 		done; \
 	fi
-	@printf "\r$(GREEN)$(OK) Objects cleaned!$(RESET)\033[K\n"
+	@printf "\r$(PRIMARY)$(NAME) objects cleaned!$(RESET)\033[K\n"
 	@rm -rf $(OBJS_DIR)
 
 fclean: clean
 	@printf "\n"
-	@printf "$(RED)$(CLEAN) Cleanning %s...$(RESET)\n" "$(NAME)"
+	@printf "$(ERROR)Cleanning %s...$(RESET)\n" "$(NAME)"
 	@rm -rf $(NAME)
 
 re: fclean all
