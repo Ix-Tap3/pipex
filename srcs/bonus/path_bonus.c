@@ -6,7 +6,7 @@
 /*   By: pcaplat <pcaplat@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 20:18:13 by pcaplat           #+#    #+#             */
-/*   Updated: 2026/02/05 12:47:32 by pcaplat          ###   ########.fr       */
+/*   Updated: 2026/02/06 11:18:16 by pcaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static char	*check_cmd_path(char **path_ar, char **cmd, int *perm_error)
 		}
 		if (access(path, F_OK | X_OK) == 0)
 			return (path);
-		if (access(path, X_OK) == -1)
+		if (access(path, F_OK) == 0 && access(path, X_OK) == -1)
 			*perm_error = 1;
 		free(path);
 		i++;
